@@ -14,19 +14,39 @@ public class DrinkWater {
     private JButton cancelButton;
     private JPanel buttonPanel;
 
-    //アラームの定期実行処理
+    // アラームの定期実行処理
     public DrinkWater() {
+        /*
+         * アラーム間隔の計算
+         *
+         * 必要な水分量 = 1.2L = 1200ml
+         * 紙コップ1杯 = 205ml
+         * 1200ml / 205ml = 約6(5.85365…)
+         * 仕事時間を8時間と仮定し480分(8時間) / 6 = 80分
+         */
+        int drink = 1200; // 1日に必要な水分
+        int mouthful = 205; // １度に摂取する水分量
+        int howOften = drink / mouthful; // 摂取回数
+        int workTime = 480; // 仕事時間
+        int workMinuts = workTime / howOften * 60 * 1000; // 仕事時間をミリ秒に変換
+
+        /*
+         * 上記計算結果表示
+         * System.out.println(workMinuts);
+         */
+
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 frame();
+                System.out.println("実行中…");
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 400000); // 480000 = 1000ミリビョウ(1秒) * 60(1分) * 8(8時間)
+        timer.scheduleAtFixedRate(task, 0, workMinuts);
     }
 
-    //ウィンドウ作成
+    // ウィンドウ作成
     public void frame() {
         JFrame frame = new JFrame("Drink");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
